@@ -6,7 +6,15 @@ public class Rental
 		this.daysRented = daysRented;
 	}
 
-	public int getDaysRented () {
+    public int calculatePoints() {
+        int point = 1;
+        if (movie.getPriceCode() == Movie.NEW_RELEASE && daysRented > 1) {
+            point++;
+        }
+        return point;
+    }
+
+    public int getDaysRented () {
 		return daysRented;
 	}
 

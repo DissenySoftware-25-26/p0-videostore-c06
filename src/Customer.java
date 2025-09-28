@@ -19,31 +19,20 @@ public class Customer
 	}
 	
 	public String statement () {
-        double totalAmount = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
-        Iterator<Rental> rentals = this.rentals.iterator();
 
-        while (rentals.hasNext()) {
-            double price = 0;
-            Rental each = rentals.next();
 
-            //  aquí antes estaba el switch, ahora lo sustituimos por:
-            price = getAmountFor(each);
-
-            frequentRenterPoints++;
-            if (each.getMovie().getPriceCode() == Movie.NEW_RELEASE
-                    && each.getDaysRented() > 1) {
-                frequentRenterPoints++;
-            }
+        for (Rental each : rentals) {
+            double price = getAmountFor(each);
 
             result += "\t" + each.getMovie().getTitle() + "\t"
                     + String.valueOf(price) + "\n";
-            totalAmount += price;
         }
 
-        result += "You owed " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points\n";
+        // Ahora usamos el método en vez de la variable local
+        result += "You owed " + String.valueOf(getTotalCharge()) + "\n";
+        result += "You earned " + String.valueOf(getTotalFrequentRenterPoints()) + " frequent renter points\n";
 
         return result;
     }
@@ -52,5 +41,20 @@ public class Customer
         return rental.getRentalPrice();
     }
 
+    private double getTotalCharge() {
+        double totalAmount = 0;
+        for (Rental rental : rentals) {
+            totalAmount += getAmountFor(rental);
+        }
+        return totalAmount;
+    }
+
+    private int getTotalFrequentRenterPoints() {
+        int totalPoints = 0;
+        for (Rental rental : rentals) {
+            totalPoints += rental.calculatePoints();
+            }
+        return totalPoints;
+    }
 
 }
