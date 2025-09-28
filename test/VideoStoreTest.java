@@ -36,4 +36,15 @@ public class VideoStoreTest extends TestCase
 	}
 
 	private Customer customer;
+
+    public void testSingleNewReleaseHtmlStatement () {
+        customer.addRental (new Rental(new Movie("The Cell", Movie.NEW_RELEASE), 3));
+        assertEquals(
+                "<H1>Rentals for <EM>Fred</EM></H1><P>\n" +
+                        "The Cell: 9.0<BR>\n" +
+                        "<P>You owe <EM>9.0</EM><P>\n" +
+                        "On this rental you earned <EM>2</EM> frequent renter points<P>",
+                customer.htmlStatement()
+        );
+    }
 }
